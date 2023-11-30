@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cryptocurrency News</title>
+  <h1>Recent News In Crypto</h1>
+</head>
+<body>
+  <div id="news-container"></div>
+  <script type="module" src="serpapi.mjs">
+    import { getJson, getHtmlBySearchId} from 'serpapi.mjs';
+
+    async function fetchData() {
+      try {
+        const response = await getJson({
+          engine: "google",
+          api_key: "cba426906bb6d8e1c3f137c92f72a3cfb2fb6de4ecd9e91293b531caa94078c8",
+          async: true,
+          q: "crypto",
+        });
+
+        const { id } = response.search_metadata;
+
+        // async/await
+        const html = await getHtmlBySearchId(id, { api_key: "cba426906bb6d8e1c3f137c92f72a3cfb2fb6de4ecd9e91293b531caa94078c8" });
+
+        // Update the content of the news container
+        document.getElementById('news-container').innerHTML = html;
+      } catch (error) {
+        console.error('Error fetching data:', error.message);
+      }
+    }
+
+    // Call the function
+    fetchData();
+  </script>
+</body>
+</html>
